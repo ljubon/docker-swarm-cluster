@@ -1,11 +1,15 @@
 #!/bin/bash
 
 # Install test version of docker engine, also shell completions
-apt-get install -y -q wget curl tree
-curl -fsSL https://test.docker.com/ | sh
+apt-get install -y -q wget tree ipvsadm
+apt-get update
+apt-get upgrade
 
-# Add the vagrant user to the docker group
+# Add vagrant user to docker group
 usermod -aG docker vagrant
+
+# Install test version of docker version, also shell completition
+curl -fsSL https://test.docker.com/ | sh
 
 # Configure the docker engine
 # Daemon options: https://docs.docker.com/engine/reference/commandline/dockerd/
@@ -23,6 +27,7 @@ cat > /etc/docker/daemon.json <<END
 }
 END
 
+
 # You can't pass both CLI args and use the daemon.json for parameters, 
 # so I'm using the RPM systemd unit file because it doesn't pass any args 
 # This version changes the following as of 17.03:
@@ -34,8 +39,11 @@ wget -O /lib/systemd/system/docker.service https://raw.githubusercontent.com/doc
 systemctl daemon-reload
 systemctl restart docker
 
+apt-get install -y python python-pip
+pip install docker-compose
+echo $(docker-compose -v)
+
 # optional tools for learning 
 apt-get install -y -q ipvsadm tree
 groupadd -g docker
 usermod -aG docker vagrant
-# lsns is helpful from util-linux, this is installed already
