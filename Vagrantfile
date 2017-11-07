@@ -10,7 +10,6 @@ Vagrant.configure("2") do |config|
     (1..2).each do |number|
         config.vm.define "m#{number}" do |node|
             node.vm.network "private_network", ip: "192.168.99.20#{number}"
-              virtualbox__intnet = "NAT-cluster"
             node.vm.hostname = "m#{number}"
         end  
     end
@@ -19,7 +18,6 @@ Vagrant.configure("2") do |config|
     (1..4).each do |number|
         config.vm.define "w#{number}" do |node|
             node.vm.network "private_network", ip: "192.168.99.21#{number}"
-              virtualbox__intnet = "NAT-cluster"
             node.vm.hostname = "w#{number}"
         end  
     end
